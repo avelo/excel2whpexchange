@@ -69,10 +69,9 @@ df = df.drop(columns=cols_to_remove)
 units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
-    metadata = pd.read_excel(SPREADSHEET_FILE, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_string(header=False, index=False)
+    metadata = pd.read_excel(SPREADSHEET_FILE, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False)
 except:
     metadata = ''
-metadata = metadata.replace('\\t', '\t')
 # Write file
 outfile = SPREADSHEET_FILE.split('.')[0] + '_hy1.csv'
 print(f'Writting WHP-Exchange BOTTLE file in: {outfile}')
@@ -80,7 +79,8 @@ with open(outfile, 'wt', encoding='utf-8', newline='') as fout:
     yyyymmdd = dt.datetime.now().strftime('%Y%m%d')
     fout.write(f'BOTTLE,{yyyymmdd}{INSTITUTION}\n')
     for line in metadata.splitlines():
-        fout.write(f'# {line.strip()}\n')
+        line = line.strip('"')
+        fout.write(f'# {line}\n')
     fout.write(','.join(df.columns)+'\n')
     fout.write(','.join(list(units.fillna('')))+'\n')
     fout.write(df.to_csv(header=False, index=False, line_terminator='\n'))
