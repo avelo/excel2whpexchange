@@ -1,2 +1,1 @@
-# stuff
-Some code tools
+Just some code utilities
