@@ -60,7 +60,7 @@ except:
 # Write file
 outfile = SPREADSHEET_FILE.split('.')[0] + '_hy1.csv'
 print(f'Writting WHP-Exchange BOTTLE file in: {outfile}')
-with open(outfile, 'wt', newline='') as fout:
+with open(outfile, 'wt', encoding='utf-8', newline='') as fout:
     yyyymmdd = dt.datetime.now().strftime('%Y%m%yyyymmdd')
     fout.write(f'BOTTLE,{yyyymmdd}CARIMED\n')
     for line in metadata.splitlines():
