@@ -79,7 +79,7 @@ with open(outfile, 'wt', encoding='utf-8', newline='') as fout:
     yyyymmdd = dt.datetime.now().strftime('%Y%m%d')
     fout.write(f'BOTTLE,{yyyymmdd}{INSTITUTION}\n')
     for line in metadata.splitlines():
-        line = line.strip('"')
+        line = line.strip('"').replace(',,',',').rstrip(',')
         fout.write(f'# {line}\n')
     fout.write(','.join(df.columns)+'\n')
     fout.write(','.join(list(units.fillna('')))+'\n')
