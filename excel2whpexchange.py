@@ -1,16 +1,18 @@
 import sys
 import os
 import datetime as dt
+import re
+import csv
 import pandas as pd
 # 
 try:
     SPREADSHEET_FILE = sys.argv[1]
 except:
     sys.exit('This script will take an spreadsheet (.xlsx or .ods) as argument and convert to WHP-Exchange BOTTLE format\n\n' +
-          'FIRST (from the left) sheet has to contain the table of data WITH names in 1st row, units in 2nd one and data below\n' +
-          'SECOND (from the left) sheet has to contain the metadata if any or be an empty sheet\n\n' +
-          'please use the following format: excel2whpexchange.py [file_name] [INSTITUTION]\n'+
-          '  example: python excel2whpexchange.py cruisefile.xlsx CSICIIMAVL' )
+             'FIRST (from the left) sheet has to contain the table of data WITH names in 1st row, units in 2nd one and data below\n' +
+             'SECOND (from the left) sheet has to contain the metadata if any or be an empty sheet\n\n' +
+             'please use the following format: excel2whpexchange.py [file_name] [INSTITUTION]\n'+
+             '  example: python excel2whpexchange.py cruisefile.xlsx CSICIIMAVL' )
     #SPREADSHEET_FILE = 'input_file.xlsx'
     #SPREADSHEET_FILE = 'input_file.ods'
 #
@@ -69,7 +71,7 @@ df = df.drop(columns=cols_to_remove)
 units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
-    metadata = pd.read_excel(SPREADSHEET_FILE, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False)
+    metadata = pd.read_excel(SPREADSHEET_FILE, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
 except:
     metadata = ''
 # Write file
@@ -79,7 +81,7 @@ with open(outfile, 'wt', encoding='utf-8', newline='') as fout:
     yyyymmdd = dt.datetime.now().strftime('%Y%m%d')
     fout.write(f'BOTTLE,{yyyymmdd}{INSTITUTION}\n')
     for line in metadata.splitlines():
-        line = line.strip('"').replace(',,',',').rstrip(',')
+        line = re.sub(r',+', ',', line).rstrip(',')
         fout.write(f'# {line}\n')
     fout.write(','.join(df.columns)+'\n')
     fout.write(','.join(list(units.fillna('')))+'\n')
