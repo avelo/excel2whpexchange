@@ -6,20 +6,20 @@ import csv
 import pandas as pd
 # 
 try:
-    SPREADSHEET_FILE = sys.argv[1]
+    spreadsheet_file = sys.argv[1]
 except:
     sys.exit('This script will take an spreadsheet (.xlsx or .ods) as argument and convert to WHP-Exchange BOTTLE format\n\n' +
              'FIRST (from the left) sheet has to contain the table of data WITH names in 1st row, units in 2nd one and data below\n' +
              'SECOND (from the left) sheet has to contain the metadata if any or be an empty sheet\n\n' +
-             'please use the following format: excel2whpexchange.py [file_name] [INSTITUTION]\n'+
+             'please use the following format: excel2whpexchange.py [file_name] [institution]\n'+
              '  example: python excel2whpexchange.py cruisefile.xlsx CSICIIMAVL' )
-    #SPREADSHEET_FILE = 'input_file.xlsx'
-    #SPREADSHEET_FILE = 'input_file.ods'
+    #spreadsheet_file = 'input_file.xlsx'
+    #spreadsheet_file = 'input_file.ods'
 #
 try:
-    INSTITUTION = sys.argv[2]
+    institution = sys.argv[2]
 except:
-    INSTITUTION = 'INSTITUTION'
+    institution = 'NOTREPORTED'
 
 PRETTY_PRINT = True
 #
@@ -35,14 +35,16 @@ for k in {'LATITUDE', 'LONGITUDE', 'CTDPRS', 'CTDTMP', 'CTDSAL', 'SALNTY', 'PHTS
     precision[k] = 4
 
 ## Read FIRST sheet with data
-if not os.path.isfile(SPREADSHEET_FILE):
-    sys.exit(f'File {SPREADSHEET_FILE} not found')
-ext = SPREADSHEET_FILE.split('.')[-1]
+if not os.path.isfile(spreadsheet_file):
+    print(f'File {spreadsheet_file} not found')
+    sys.exit()
+ext = spreadsheet_file.split('.')[-1]
 if not ext in ['xlsx', 'ods']:
-    sys.exit(f'Only spreadsheets in Excel (.xlsx) or OpenDocument (.ods) format allowed')
+    print(f'Only spreadsheets in Excel (.xlsx) or OpenDocument (.ods) format allowed')
+    sys.exit()
 engine = 'odf' if ext == 'ods' else 'xlrd'
-print(f'Processing {SPREADSHEET_FILE}')
-df = pd.read_excel(SPREADSHEET_FILE, 0, dtype=object, encoding='utf-8', engine=engine)
+print(f'Processing {spreadsheet_file}')
+df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
 units = df.iloc[0, :]
 df = df.iloc[1:, :]
 # Set precisions
@@ -71,15 +73,16 @@ df = df.drop(columns=cols_to_remove)
 units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
-    metadata = pd.read_excel(SPREADSHEET_FILE, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
+    metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
 except:
+    print('Error or non-existent metadata sheet')
     metadata = ''
 # Write file
-outfile = SPREADSHEET_FILE.split('.')[0] + '_hy1.csv'
+outfile = spreadsheet_file.split('.')[0] + '_hy1.csv'
 print(f'Writting WHP-Exchange BOTTLE file in: {outfile}')
 with open(outfile, 'wt', encoding='utf-8', newline='') as fout:
     yyyymmdd = dt.datetime.now().strftime('%Y%m%d')
-    fout.write(f'BOTTLE,{yyyymmdd}{INSTITUTION}\n')
+    fout.write(f'BOTTLE,{yyyymmdd}{institution}\n')
     for line in metadata.splitlines():
         line = re.sub(r',+', ',', line).rstrip(',')
         fout.write(f'# {line}\n')
