@@ -27,11 +27,13 @@ PRETTY_PRINT = True
 precision = {}
 for k in {'STNNBR', 'CASTNO', 'BTLNBR', 'SAMPNO'}:
     precision[k] = 0
-for k in {'CTDOXY', 'OXYGEN', 'SILCAT', 'NITRAT', 'NITRIT', 'PHSPHT', 'TCARBN', 'ALKALI', 'CFC113', 'SF6', 'CCL4', 'HELIUM', 'HELIUM_ERR', 'DELHE3', 'DELHE3_ERR'}:
+for k in {'BOTTOMDEPTH','DEPTH'}:
+    precision[k] = 1
+for k in {'CTDOXY', 'OXYGEN', 'SILCAT', 'NITRAT', 'NITRIT', 'PHSPHT', 'AMMONIA', 'CHLORA', 'TCARBN', 'ALKALI', 'CFC113', 'SF6', 'CCL4', 'HELIUM', 'HELIUM_ERR', 'DELHE3', 'DELHE3_ERR'}:
     precision[k] = 2
-for k in {'CFC11', 'CFC12', 'TRITUM', 'TRITUM_ERR'}:
+for k in {'CFC11', 'CFC12', 'TRITUM', 'TRITUM_ERR','PH','PH_TS','PH_TOT','PH_TOT_IS','PH_SWS'}:
     precision[k] = 3
-for k in {'LATITUDE', 'LONGITUDE', 'CTDPRS', 'CTDTMP', 'CTDSAL', 'SALNTY', 'PHTS25P0', 'NEON', 'NEON_ERR'}:
+for k in {'LATITUDE', 'LONGITUDE', 'CTDPRS', 'CTDTMP', 'CTDSAL', 'SALNTY', 'PHTS25P0', 'NEON', 'NEON_ERR','THETA'}:
     precision[k] = 4
 
 ## Read FIRST sheet with data
