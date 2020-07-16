@@ -49,6 +49,8 @@ print(f'Processing {spreadsheet_file}')
 df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
 units = df.iloc[0, :]
 df = df.iloc[1:, :]
+while df.iloc[-1,0].startswith('END') or df.iloc[-1,0].startswith(',') or df.iloc[-1,0]=='':
+    df=df.iloc[:-1]
 # Set precisions
 for k, v in precision.items():
     try:
