@@ -27,13 +27,13 @@ PRETTY_PRINT = True
 precision = {}
 for k in {'STNNBR', 'CASTNO', 'BTLNBR', 'SAMPNO'}:
     precision[k] = 0
-for k in {'BOTTOMDEPTH','DEPTH'}:
+for k in {'BOTTOMDEPTH','DEPTH','CTDPRS', 'CTDOXY', 'OXYGEN', 'TCARBN', 'ALKALI'}:
     precision[k] = 1
-for k in {'CTDOXY', 'OXYGEN', 'SILCAT', 'NITRAT', 'NITRIT', 'PHSPHT', 'AMMONIA', 'CHLORA', 'TCARBN', 'ALKALI', 'CFC113', 'SF6', 'CCL4', 'HELIUM', 'HELIUM_ERR', 'DELHE3', 'DELHE3_ERR'}:
+for k in {'SILCAT', 'NITRAT', 'NITRIT', 'AMMONIA', 'CHLORA'}:
     precision[k] = 2
-for k in {'CFC11', 'CFC12', 'TRITUM', 'TRITUM_ERR','PH','PH_TS','PH_TOT','PH_TOT_IS','PH_SWS'}:
+for k in {'PHSPHT', 'TRITUM', 'TRITUM_ERR','PH','PH_TS','PH_TOT','PH_TOT_IS','PH_SWS','PHTS25P0','CFC-11','CFC-12','CFC113', 'CCL4', 'HELIUM', 'HELIUM_ERR', 'DELHE3', 'DELHE3_ERR'}:
     precision[k] = 3
-for k in {'LATITUDE', 'LONGITUDE', 'CTDPRS', 'CTDTMP', 'CTDSAL', 'SALNTY', 'PHTS25P0', 'NEON', 'NEON_ERR','THETA'}:
+for k in {'LATITUDE', 'LONGITUDE', 'CTDTMP', 'CTDSAL', 'SALNTY', 'NEON', 'NEON_ERR','THETA','SF6'}:
     precision[k] = 4
 
 ## Read FIRST sheet with data
@@ -46,7 +46,10 @@ if not ext in ['xlsx', 'ods']:
     sys.exit()
 engine = 'odf' if ext == 'ods' else 'xlrd'
 print(f'Processing {spreadsheet_file}')
-df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
+try:
+    df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
+except:
+    df = pd.read_excel(spreadsheet_file, 0, dtype=object, engine=engine)
 units = df.iloc[0, :]
 df = df.iloc[1:, :]
 while df.iloc[-1,0].startswith('END') or df.iloc[-1,0].startswith(',') or df.iloc[-1,0]=='':
@@ -77,7 +80,10 @@ df = df.drop(columns=cols_to_remove)
 units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
-    metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
+    try:
+        metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
+    except:
+        metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, quoting=csv.QUOTE_NONE, escapechar=',')
 except:
     print('Error or non-existent metadata sheet')
     metadata = ''
