@@ -1,10 +1,20 @@
+# excel2whpexchange
+[![DOI](https://zenodo.org/badge/254050254.svg)](https://zenodo.org/badge/latestdoi/254050254)
+
 Small tool to convert an spreadsheet Excel (.xlsx) or LibreOffice (.ods) file to WOCE [WHP-Exchange format](https://exchange-format.readthedocs.io/en/latest/) (BOTTLE)
+
+This tool was developed for helping users to generate a properly formatted WHP-Exchange format file, automatically doing the following:
+ - Generating BOTTLE tag
+ - Including and commenting metadata
+ - Generating header and units line
+ - Fixing known paramenters to recommended precision decimals
+ - Setting END_BOTTLE tag
 
 Can be used by calling python file or notebook locally or by launching the notebook through COLAB
 
 Excel file needs to have the following format:
  - FIRST (from the left) sheet has to contain the table of data WITH header names in 1st row, units in 2nd one and data below
- - SECOND (from the left) sheet has to contain the metadata if any or be an empty sheet
+ - SECOND (from the left) sheet has to contain the metadata as text (if any) or be an empty sheet
 
 if python file is called directly, please use the following format: ```excel2whpexchange.py [file_name] [institution]```
 
