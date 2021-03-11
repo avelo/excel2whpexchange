@@ -9,7 +9,7 @@ Excel file needs to have the following format:
 if python file is called directly, please use the following format: ```excel2whpexchange.py [file_name] [institution]```
 
 - file_name will be the spreadsheet
-- institution will be the identificator for creator institution or user as [recommended by WHP-Exchange[(https://exchange-format.readthedocs.io/en/latest/common.html#file-identification-stamp)
+- institution will be the identificator for creator institution or user as [recommended by WHP-Exchange](https://exchange-format.readthedocs.io/en/latest/common.html#file-identification-stamp)
 
 example for me:
 ```$ python excel2whpexchange.py cruisefile.xlsx CSICIIMAVL```
