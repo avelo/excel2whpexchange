@@ -52,8 +52,11 @@ except:
     df = pd.read_excel(spreadsheet_file, 0, dtype=object, engine=engine)
 units = df.iloc[0, :]
 df = df.iloc[1:, :]
-while df.iloc[-1,0].startswith('END') or df.iloc[-1,0].startswith(',') or df.iloc[-1,0]=='':
-    df=df.iloc[:-1]
+try:
+    while df.iloc[-1,0].startswith('END') or df.iloc[-1,0].startswith(',') or df.iloc[-1,0]=='':
+        df=df.iloc[:-1]
+except:
+    pass
 # Set precisions
 for k, v in precision.items():
     try:
