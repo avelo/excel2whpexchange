@@ -1,5 +1,6 @@
 # excel2whpexchange
 [![DOI](https://zenodo.org/badge/254050254.svg)](https://zenodo.org/badge/latestdoi/254050254)
+<a href="https://colab.research.google.com/github/avelo/stuff/blob/master/excel2whpexchange.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 Small tool to convert an spreadsheet Excel (.xlsx) or LibreOffice (.ods) file to WOCE [WHP-Exchange format](https://exchange-format.readthedocs.io/en/latest/) (BOTTLE)
 
