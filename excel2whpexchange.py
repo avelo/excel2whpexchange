@@ -55,7 +55,7 @@ units = df.iloc[0, :]
 units_line=True
 if sum(isinstance(i, int) for i in units) < 2:
   df = df.iloc[1:, :]
-  units = units.astype(str)
+  units = units.astype(str).replace('nan','')
 else:
   units = units.apply(lambda x: '')
   units_line = False
