@@ -44,15 +44,16 @@ ext = spreadsheet_file.split('.')[-1]
 if not ext in ['xlsx', 'ods']:
     print(f'Only spreadsheets in Excel (.xlsx) or OpenDocument (.ods) format allowed')
     sys.exit()
-engine = 'odf' if ext == 'ods' else 'xlrd'
+engine = 'odf' if ext == 'ods' else 'openpyxl'
 print(f'Processing {spreadsheet_file}')
-try:
-    df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
-except:
-    df = pd.read_excel(spreadsheet_file, 0, dtype=object, engine=engine)
+#try:
+#    df = pd.read_excel(spreadsheet_file, 0, dtype=object, encoding='utf-8', engine=engine)
+#except:
+#    df = pd.read_excel(spreadsheet_file, 0, dtype=object, engine=engine)
+df = pd.read_excel(spreadsheet_file, 0, dtype=object, engine=engine)
 units = df.iloc[0, :]
 units_line=True
-if type(units.iloc[0]) is str:
+if sum(isinstance(i, int) for i in units) < 2:
   df = df.iloc[1:, :]
   units = units.astype(str)
 else:
@@ -90,10 +91,11 @@ df = df.drop(columns=cols_to_remove)
 units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
-    try:
-        metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
-    except:
-        metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, quoting=csv.QUOTE_NONE, escapechar=',')
+    #try:
+    #    metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, encoding='utf-8', engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, encoding='utf8', quoting=csv.QUOTE_NONE, escapechar=',')
+    #except:
+    #    metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, quoting=csv.QUOTE_NONE, escapechar=',')
+    metadata = pd.read_excel(spreadsheet_file, 1, dtype=str, engine=engine, header=None, na_filter=False).to_csv(header=False, index=False, quoting=csv.QUOTE_NONE, escapechar=',')
 except:
     print('Error or non-existent metadata sheet')
     metadata = ''
