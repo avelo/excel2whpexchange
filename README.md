@@ -3,7 +3,7 @@
 
 Small tool to convert an spreadsheet Excel (.xlsx) or LibreOffice (.ods) file to WOCE [WHP-Exchange format](https://exchange-format.readthedocs.io/en/latest/) (BOTTLE)
 
-<a href="https://colab.research.google.com/github/avelo/stuff/blob/master/excel2whpexchange.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Tool In Colab"/></a>
+Tool can run directly through COLAB here >>>   <a href="https://colab.research.google.com/github/avelo/stuff/blob/master/excel2whpexchange.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Tool In Colab"/></a>
 
 This tool was developed for helping users to generate a properly formatted WHP-Exchange format file, automatically doing the following:
  - Generating BOTTLE tag
