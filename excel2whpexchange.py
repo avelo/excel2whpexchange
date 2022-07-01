@@ -84,11 +84,13 @@ for col in df:
         cols_to_remove.append(col)
         if f'{col}_FLAG_W' in df:
             cols_to_remove2.append(f'{col}_FLAG_W')
-print(f'..following columns removed due to -999: {",".join(cols_to_remove)}')
-print(f'..following columns removed due to nonsense without previous ones: {",".join(cols_to_remove2)}')
-cols_to_remove.extend(cols_to_remove2)
-df = df.drop(columns=cols_to_remove)
-units = units.drop(cols_to_remove)
+if len(cols_to_remove) > 0:
+    print(f'..following columns removed due to -999: {",".join(cols_to_remove)}')
+    if len(cols_to_remove2) > 0:
+        print(f'..following columns removed due to nonsense without previous ones: {",".join(cols_to_remove2)}')
+        cols_to_remove.extend(cols_to_remove2)
+    df = df.drop(columns=cols_to_remove)
+    units = units.drop(cols_to_remove)
 ## Read SECOND sheet with metadata
 try:
     #try:
